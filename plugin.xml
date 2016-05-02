@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+ 	<extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="BeanShell Editor"
+            extensions="bsh"
+            icon="icons/sample.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="bshdltkeditor.editor.BshEditor"
+            id="bshdltkeditor.editors.bshEditor">
+            <contentTypeBinding
+         		contentTypeId="bshdltkeditor.bshContentType">
+      		</contentTypeBinding>
+      </editor>
+   	</extension>
+
+ 	<extension point="org.eclipse.core.contenttype.contentTypes">
+	   <content-type
+	      id="bshdltkeditor.bshContentType"   
+	      base-type="org.eclipse.core.runtime.text"
+	      file-extensions="bsh"
+	      name="%bshContentType"
+	      priority="high">       
+	   </content-type>
+ 	</extension>
+   
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer class="bshdltkeditor.editor.BshPreferenceInitializer">
+      	</initializer>
+ 	</extension>
+   
+	<extension point="org.eclipse.dltk.launching.interpreterInstallTypes">
+		<interpreterInstallType
+			class="bshdltkeditor.interpreter.BshScriptInstallType"
+			id="org.eclipse.dltk.sh.ui.interpreter.BshScriptInstallType">
+		</interpreterInstallType>
+	</extension>
+	
+	<extension point="org.eclipse.dltk.launching.interpreterInstalls">
+		<interpreterInstall
+           home="/bin/sh"
+           id="org.eclipse.dltk.sh.ui.interpreter.default"
+           interpreterInstallType="org.eclipse.dltk.sh.ui.interpreter.BshScriptInstallType"
+           name="/bin/sh">
+     	</interpreterInstall>
+	</extension>
+	
+	<extension point="org.eclipse.ui.preferencePages">
+		<page id="org.eclipse.dltk.sh.ui.preferences"
+			name="Beanshell Script"
+    		class="bshdltkeditor.MainPreferencePage">
+   		</page>
+		<page
+			class="bshdltkeditor.interpreter.BshInterpreterPreferencePage"
+			category="org.eclipse.dltk.sh.ui.preferences"
+			id="bshdltkeditor.preferences.interpreters" name="Interpreters">
+		</page>
+			
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType
+			id="bshdltkeditor.launchConfigurationType1" name="Beanshell Script"
+			delegate="bshdltkeditor.LaunchConfigurationDelegate"
+			modes="run">
+		</launchConfigurationType>
+	</extension>
+	
+	<extension point="org.eclipse.debug.ui.launchShortcuts">
+		<shortcut class="bshdltkeditor.LaunchShortcut"
+			id="bshdltkeditor.shortcut" label="Beanshell script" modes="run"
+			icon="icons/shellapp.gif">
+			<contextualLaunch>
+				<enablement>
+					<with variable="selection">
+						<count value="1" />
+						<iterate>
+							<or>
+								<test args="org.eclipse.dltk.sh.core.nature" property="org.eclipse.dltk.launching.hasProjectNature">
+								</test>
+							</or>
+						</iterate>
+					</with>
+				</enablement>
+				<contextLabel label="Run beanshell script" mode="run">
+				</contextLabel>
+			</contextualLaunch>
+
+		</shortcut>
+	</extension>
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+		<launchConfigurationTabGroup
+			class="bshdltkeditor.interpreter.BshTabGroup" id="bshdltkeditor.interpreter.BshTabGroup"
+			type="bshdltkeditor.launchConfigurationType1">
+		</launchConfigurationTabGroup>
+	</extension>
+	
+</plugin>

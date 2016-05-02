@@ -41,10 +41,10 @@
 	
 	<extension point="org.eclipse.dltk.launching.interpreterInstalls">
 		<interpreterInstall
-           home="/bin/sh"
+           home="/usr/bin/java"
            id="org.eclipse.dltk.sh.ui.interpreter.default"
            interpreterInstallType="org.eclipse.dltk.sh.ui.interpreter.BshScriptInstallType"
-           name="/bin/sh">
+           name="/usr/bin/java">
      	</interpreterInstall>
 	</extension>
 	
@@ -71,8 +71,7 @@
 	
 	<extension point="org.eclipse.debug.ui.launchShortcuts">
 		<shortcut class="bshdltkeditor.LaunchShortcut"
-			id="bshdltkeditor.shortcut" label="Beanshell script" modes="run"
-			icon="icons/shellapp.gif">
+			id="bshdltkeditor.shortcut" label="Beanshell script" modes="run">
 			<contextualLaunch>
 				<enablement>
 					<with variable="selection">

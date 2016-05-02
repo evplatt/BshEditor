@@ -4,6 +4,7 @@ Bundle-Name: BshDLTKEditor
 Bundle-SymbolicName: bshDLTKEditor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: bshdltkeditor.Activator
+Bundle-ClassPath: .,lib/bsh-core-2.0b4.jar
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,

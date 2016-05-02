@@ -4,17 +4,18 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
+//import org.eclipse.core.resources.IResource;
+//import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.ISourceViewer;
 
+import bsh.*;
 
 public class BshLinterThread extends Thread implements IdleTimerListener {      
 	private final Object lock = new Object();
 	private final int waitForTermination = 1000; // millis
 	
-	private IResource resource;
+	//private IResource resource;
 	private IDocument document;
 	private String code;
 	
@@ -64,7 +65,7 @@ public class BshLinterThread extends Thread implements IdleTimerListener {
 	
 	private void runImpl() throws InterruptedException
 	{
-	    int exceptions = 0;
+	    //int exceptions = 0;
 		while (!Thread.interrupted())
 	    {
 	        String text;
@@ -78,10 +79,11 @@ public class BshLinterThread extends Thread implements IdleTimerListener {
 	        StringReader sr = new StringReader(text);
 	        try {
 				Map<String,String> errors = BshLinter.lint(sr);
+				System.out.println(errors);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	        
+	        	       
 	        //TODO:  WHAT NOW????????????
 	        
 		}

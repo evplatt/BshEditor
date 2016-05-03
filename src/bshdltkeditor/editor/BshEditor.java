@@ -1,8 +1,8 @@
 package bshdltkeditor.editor;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
@@ -23,6 +23,7 @@ import bshdltkeditor.core.BshScriptLanguageToolkit;
 import bshdltkeditor.text.BshTextTools;
 import bshdltkeditor.text.IBshPartitions;
 
+@SuppressWarnings("restriction")
 public class BshEditor extends ScriptEditor {
 
 	public static final String EDITOR_CONTEXT = "#BshScriptEditorContext";
@@ -86,8 +87,6 @@ public class BshEditor extends ScriptEditor {
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
-       
-		
 	}
 	
     public void registerIdleListener(IdleTimerListener obj)
@@ -128,14 +127,14 @@ public class BshEditor extends ScriptEditor {
         linterThread.setPriority(Thread.MIN_PRIORITY);
         linterThread.start();
         linterThread.setDocument(
-            //resource,
+            getResource(),
             v.getDocument());
         
         registerIdleListener(linterThread);
         
     }
     
-    public void createPartControl(Composite parent)
+	public void createPartControl(Composite parent)
     {
         // Workaround for Eclipse Bug 75440 (to fix it somehow) [LeO]
         if (Workbench.getInstance().isClosing()) return;
@@ -151,12 +150,6 @@ public class BshEditor extends ScriptEditor {
         }
         
     }
-    
-    private IResource getResource()
-    {
-        return (IResource)
-            ((IAdaptable) getEditorInput()).getAdapter(IResource.class);
-    }
 
     private void installIdleTimer()
     {
@@ -164,4 +157,8 @@ public class BshEditor extends ScriptEditor {
         idleTimer.start();
     }
 
+    public IResource getResource()
+    {
+        return (IResource)((IAdaptable) getEditorInput()).getAdapter(IResource.class);
+    }
 }

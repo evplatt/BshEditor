@@ -8,7 +8,7 @@ public class LaunchShortcut extends AbstractScriptLaunchShortcut {
 
 	@Override
 	protected ILaunchConfigurationType getConfigurationType() {
-		return getLaunchManager().getLaunchConfigurationType("org.eclipse.dltk.sh.ui.launchConfigurationType1");
+		return getLaunchManager().getLaunchConfigurationType("bshdltkeditor.launchConfigurationType1");
 	}
 
 	@Override

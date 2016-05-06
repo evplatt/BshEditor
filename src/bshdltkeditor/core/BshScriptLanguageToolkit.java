@@ -15,7 +15,7 @@ public class BshScriptLanguageToolkit extends AbstractLanguageToolkit {
 
 	@Override
 	public String getLanguageName() {
-		return "Shell Script";
+		return "Beanshell Script";
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class BshScriptLanguageToolkit extends AbstractLanguageToolkit {
 
 	@Override
 	public String getLanguageContentType() {
-		return "org.eclipse.dltk.sh.content-type";
+		return "bshdltkeditor.content-type";
 	}
 
 }

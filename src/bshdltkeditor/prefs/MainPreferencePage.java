@@ -1,4 +1,4 @@
-package bshdltkeditor;
+package bshdltkeditor.prefs;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.ImageDescriptor;

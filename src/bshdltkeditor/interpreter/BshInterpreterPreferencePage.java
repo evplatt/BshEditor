@@ -5,7 +5,7 @@ import org.eclipse.dltk.internal.debug.ui.interpreters.ScriptInterpreterPreferen
 
 public class BshInterpreterPreferencePage extends ScriptInterpreterPreferencePage {
 
-	public static final String PAGE_ID = "org.eclipse.dltk.sh.ui.preferences.interpreters";
+	public static final String PAGE_ID = "bshdltkeditor.preferences.interpreters";
 
 	@Override
 	public InterpretersBlock createInterpretersBlock() {

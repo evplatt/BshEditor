@@ -1,4 +1,5 @@
 package bshdltkeditor;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -103,20 +104,27 @@ public class BshLinter {
 		ParserTokenManager ptk = new ParserTokenManager(new JavaCharStream(new StringReader(builder.toString()))); // Leverage the ptk as a lexer
 		Token token = ptk.getNextToken(); // Current token from reader
 		boolean hasLeftBrace = false; // We'll use this to track vectors that are method bodies
+		boolean hasWhileStatement = false; // We'll use this to track vectors for do-while statements
 		Vector<Token> vector = new Vector<Token>(); // Current vector being built
-		while (token != null && token.kind != ParserTokenManager.EOF ) { // End the loop once we hit the end-of-file
+		while ( token != null && token.kind != ParserTokenManager.EOF ) { // End the loop once we hit the end-of-file
+			Token nextToken = ptk.getNextToken();
 			vector.add(token);
 			// Check if we are at a statement end or method declaration end
-			if ( token.kind == ParserTokenManager.RBRACE
-					|| ( token.kind == ParserTokenManager.SEMICOLON && !hasLeftBrace ) ) {
+			if ( ( token.kind == ParserTokenManager.RBRACE 
+					&& ( nextToken.kind != ParserTokenManager.ELSE && nextToken.kind != ParserTokenManager.WHILE ) )
+				|| ( token.kind == ParserTokenManager.SEMICOLON && !hasLeftBrace )
+				|| ( token.kind == ParserTokenManager.SEMICOLON && hasWhileStatement ) ) {
 				vectors.add(vector);
 				hasLeftBrace = false;
+				hasWhileStatement = false;
 				vector = new Vector<Token>();
 			} else if ( token.kind == ParserTokenManager.LBRACE ) { // Check if this is the beginning of a method declaration
 				hasLeftBrace = true;
-			}
-			token = ptk.getNextToken();
-		}
+			} else if ( token.kind == ParserTokenManager.WHILE ) { // Check if this is the end of a do-while statement
+				hasWhileStatement = true;
+			} // End if-else
+			token = nextToken;
+		} // End while loop
 		return vectors;
 	}
 	

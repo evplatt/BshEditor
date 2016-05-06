@@ -30,6 +30,7 @@ public class BshSourceViewerConfiguration extends ScriptSourceViewerConfiguratio
 	// Scanners for all the various content types provided by the partitioner
 	private AbstractScriptScanner fCodeScanner;
 	private AbstractScriptScanner fCommentScanner;
+	private AbstractScriptScanner fStringScanner;
 
 	public BshSourceViewerConfiguration(IColorManager colorManager, IPreferenceStore preferenceStore,
 			ITextEditor editor, String partitioning) {
@@ -51,6 +52,10 @@ public class BshSourceViewerConfiguration extends ScriptSourceViewerConfiguratio
 		reconciler.setDamager(dr, IBshPartitions.COMMENT_CONTENT_TYPE);
 		reconciler.setRepairer(dr, IBshPartitions.COMMENT_CONTENT_TYPE);
 
+		dr = new DefaultDamagerRepairer(this.fStringScanner);
+		reconciler.setDamager(dr, IBshPartitions.STRING_CONTENT_TYPE);
+		reconciler.setRepairer(dr, IBshPartitions.STRING_CONTENT_TYPE);
+
 		return reconciler;
 	}
 	
@@ -70,16 +75,15 @@ public class BshSourceViewerConfiguration extends ScriptSourceViewerConfiguratio
 		// This is our code scanner
 		this.fCodeScanner = new BshCodeScanner(this.getColorManager(), this.fPreferenceStore);
 		// This is default scanners for partitions with same color.
-		this.fCommentScanner = new SingleTokenScriptScanner(this.getColorManager(), this.fPreferenceStore,
-				IBshColorConstants.BSH_COMMENT);
-		//this.fCommentScanner = createCommentScanner(IBshColorConstants.BSH_COMMENT,
-		//		IBshColorConstants.BSH_TODO_TAG);
+		this.fCommentScanner = new SingleTokenScriptScanner(this.getColorManager(), this.fPreferenceStore, IBshColorConstants.BSH_COMMENT);
+		this.fStringScanner = new SingleTokenScriptScanner(this.getColorManager(), this.fPreferenceStore, IBshColorConstants.BSH_STRING);
+		
 	}
 
 	
 	@Override
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
-		return fCodeScanner.affectsBehavior(event) || fCommentScanner.affectsBehavior(event);
+		return fCodeScanner.affectsBehavior(event) || fCommentScanner.affectsBehavior(event) || fStringScanner.affectsBehavior(event);
 	}
 
 	@Override
@@ -90,5 +94,9 @@ public class BshSourceViewerConfiguration extends ScriptSourceViewerConfiguratio
 		if (fCommentScanner.affectsBehavior(event)) {
 			fCommentScanner.adaptToPreferenceChange(event);
 		}
+		if (fStringScanner.affectsBehavior(event)) {
+			fStringScanner.adaptToPreferenceChange(event);
+		}
+		
 	}
 }

@@ -1,0 +1,17 @@
+//Test file for color previews
+
+dragText() {
+    f = new Frame("Drag in the box");
+    f.setFont( new Font("Serif", Font.BOLD, 24) );
+    f.setSize(300, 300);
+    f.show();
+    gc = f.getGraphics();
+    gc.setColor(Color.cyan);
+ 
+    mouseDragged( e ) {
+        gc.drawString("Drag Me!", e.getX(), e.getY());
+    }
+    mouseMoved( e ) { }
+
+    f.addMouseMotionListener( this );
+}

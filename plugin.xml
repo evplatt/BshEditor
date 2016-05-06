@@ -2,19 +2,18 @@
 <?eclipse version="3.4"?>
 <plugin>
 
- 	<extension
-         point="org.eclipse.ui.editors">
-      <editor
-            name="BeanShell Editor"
-            extensions="bsh"
-            icon="icons/sample.gif"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="bshdltkeditor.editor.BshEditor"
-            id="bshdltkeditor.editors.bshEditor">
-            <contentTypeBinding
-         		contentTypeId="bshdltkeditor.bshContentType">
-      		</contentTypeBinding>
-      </editor>
+ 	<extension point="org.eclipse.ui.editors">
+		<editor
+	        name="BeanShell Editor"
+	        extensions="bsh"
+	        icon="icons/beany.gif"
+	        contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+	        class="bshdltkeditor.editor.BshEditor"
+	        id="bshdltkeditor.editors.bshEditor">
+	        <contentTypeBinding
+	     		contentTypeId="bshdltkeditor.bshContentType">
+	  		</contentTypeBinding>
+		</editor>
    	</extension>
 
  	<extension point="org.eclipse.core.contenttype.contentTypes">
@@ -26,39 +25,89 @@
 	      priority="high">       
 	   </content-type>
  	</extension>
-   
+
+	<extension id="bshdltkeditor.nature" point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="bshdltkeditor.core.BshNature"/>
+      </runtime>
+   	</extension>
+   	
+	<extension point="org.eclipse.dltk.ui.language">
+		<language class="bshdltkeditor.core.BshUILanguageToolkit"
+			nature="bshdltkeditor.nature" priority="0">
+		</language>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<category id="bshdltkeditor.category" name="BeanShell">
+		</category>
+		<wizard
+        	category="bshdltkeditor.category"
+        	class="bshdltkeditor.wizards.BshScriptProjectWizard"
+        	icon="icons/beany.gif"
+        	id="bshdltkeditor.projectwizard"
+        	name="BeanShell Project"
+        	project="true">
+     		<description>
+        		Create a new BeanShell project.
+			</description>
+		</wizard>
+  		<wizard
+        	category="bshdltkeditor.category"
+        	class="bshdltkeditor.wizards.NewBshScriptFileWizard"
+        	icon="icons/beany.gif"
+        	id="bshdltkeditor.scriptfilewizard"	
+        	name="BeanShell Script"
+        	project="false">
+     		<description>
+        		Create a new BeanShell Script.
+     		</description>
+  		</wizard>
+	</extension>
+	
 	<extension point="org.eclipse.core.runtime.preferences">
-		<initializer class="bshdltkeditor.editor.BshPreferenceInitializer">
+		<initializer class="bshdltkeditor.prefs.BshPreferenceInitializer">
       	</initializer>
  	</extension>
    
 	<extension point="org.eclipse.dltk.launching.interpreterInstallTypes">
 		<interpreterInstallType
 			class="bshdltkeditor.interpreter.BshScriptInstallType"
-			id="org.eclipse.dltk.sh.ui.interpreter.BshScriptInstallType">
+			id="bshdltkeditor.interpreter.BshScriptInstallType">
 		</interpreterInstallType>
 	</extension>
 	
 	<extension point="org.eclipse.dltk.launching.interpreterInstalls">
 		<interpreterInstall
            home="/usr/bin/java"
-           id="org.eclipse.dltk.sh.ui.interpreter.default"
-           interpreterInstallType="org.eclipse.dltk.sh.ui.interpreter.BshScriptInstallType"
+           id="bshdltkeditor.interpreter.default"
+           interpreterInstallType="bshdltkeditor.interpreter.BshScriptInstallType"
            name="/usr/bin/java">
      	</interpreterInstall>
 	</extension>
 	
 	<extension point="org.eclipse.ui.preferencePages">
-		<page id="org.eclipse.dltk.sh.ui.preferences"
-			name="Beanshell Script"
-    		class="bshdltkeditor.MainPreferencePage">
+		<page id="bshdltkeditor.prefs"
+			name="BeanShell Script"
+    		class="bshdltkeditor.prefs.MainPreferencePage">
    		</page>
 		<page
 			class="bshdltkeditor.interpreter.BshInterpreterPreferencePage"
-			category="org.eclipse.dltk.sh.ui.preferences"
-			id="bshdltkeditor.preferences.interpreters" name="Interpreters">
+			category="bshdltkeditor.prefs"
+			id="bshdltkeditor.prefs.interpreters" name="Interpreters">
 		</page>
-			
+		<page
+	        category="bshdltkeditor.prefs"
+	        class="bshdltkeditor.prefs.BshSyntaxColoringPreferencePage"
+	        id="bshdltkeditor.prefs.syntaxcoloring"
+	        name="Syntax coloring">
+	    </page>
+		<page
+	        category="bshdltkeditor.prefs"
+	        class="bshdltkeditor.prefs.BshEditorPreferencesPage"
+	        id="bshdltkeditor.prefs.editor"
+	        name="Editor">
+		</page>	
 	</extension>
 	
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
@@ -78,13 +127,13 @@
 						<count value="1" />
 						<iterate>
 							<or>
-								<test args="org.eclipse.dltk.sh.core.nature" property="org.eclipse.dltk.launching.hasProjectNature">
+								<test args="bshdltkeditor.nature" property="org.eclipse.dltk.launching.hasProjectNature">
 								</test>
 							</or>
 						</iterate>
 					</with>
 				</enablement>
-				<contextLabel label="Run beanshell script" mode="run">
+				<contextLabel label="Run BeanShell script" mode="run">
 				</contextLabel>
 			</contextualLaunch>
 
